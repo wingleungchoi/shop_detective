@@ -5,6 +5,9 @@ gem 'sinatra','1.4.6'
 #nokogiri for data scrapping
 gem'nokogiri', '1.6.6.2'
 
+#MongoDB #http://docs.mongodb.org/ecosystem/tutorial/ruby-mongoid-tutorial/#ruby-mongoid-tutorial
+gem 'mongoid', '~> 5.0.0.beta'
+
 group :test, :development do
 # Rack-test for testing and simulating http respost CRUD
   gem "rack-test", '0.6.3'
