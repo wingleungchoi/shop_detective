@@ -3,14 +3,13 @@ puts 'server starts'
 require 'sinatra/base'
 
 puts 'initializing'
-require File.expand_path (File.dirname(__FILE__) + '/config/application.rb'), __FILE__
-
-puts 'using Mongo DB'
-require 'mongoid'
+Dir[File.dirname(__FILE__) + '/config/application.rb'].each {|file|
+  puts 'loading #{file}'; require file
+}
 
 puts 'loading Models'
 Dir[File.dirname(__FILE__) + '/app/models/*.rb'].each {|file|
-  puts "pust loading #{file}"; require file 
+  puts "loading #{file}"; require file 
 }
 
 class ShopDetective < Sinatra::Application

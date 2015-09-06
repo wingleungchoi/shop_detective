@@ -5,4 +5,9 @@ RSpec.describe Country do
     country = Country.new(name: 'US')
     expect(country.name).to eq('US')
   end
+  it "has many states" do
+    country1 = Country.new(name: 'US')
+    state1 = State.new(name: 'NY')
+    country1.states = [state1]
+  end
 end

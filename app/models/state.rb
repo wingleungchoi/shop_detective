@@ -1,8 +1,8 @@
-class Country
+class State
   include ::Mongoid::Document
   include ::Mongoid::Timestamps
 
-  embeds_many :states
+  embedded_in :canvas
 
   field :name, type: String
 
