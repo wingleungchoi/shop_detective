@@ -1,17 +1,61 @@
-require File.expand_path '../../spec_helper.rb', __FILE__
-require File.expand_path '../../../app/workers/data_scrapper.rb', __FILE__
-require 'pry'
+require 'spec_helper'
 RSpec.describe DataScrapper do
   describe "#search_by_css" do
-    let(:scrapper){ DataScrapper.new(document_url: 'http://wingleungchoi.github.io/')}
+    before(:all) do
+      @scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      @doc1 = @scrapper.surf_page
+    end
     it "will read the nodes which meet css" do 
       # Yes, it is a redundant test.
     end
+
     it "will return nothing i.e. nil when no nodes match" do 
-      expect(scrapper.search_by_css("div#content div.topText h6")).to eq([])
+      expect(@scrapper.search_by_css(@doc1, "div#content div.topText h6")).to eq([])
     end
+
     it "will return nodes which meets nodes" do 
-      expect(scrapper.search_by_css("div#content div.topText h1")).to eq(["Hi! I am a fresh developer. This is a personal page about me. Hope you guys enjoy! :)"])
+      expect(@scrapper.search_by_css(@doc1, "div#logo.main-header_logo a")).to eq(["Yelp"])
     end
-  end 
+  end
+
+  describe "#search_companies(keyword, type)" do 
+    before(:all) do
+      @scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      @doc1 = @scrapper.surf_page
+    end
+    context "when type is 'state'" do
+      it 'will call search_companies_by_state' do
+        expect(@scrapper).to receive(:search_companies_by_state).with('New York')
+       @scrapper.search_companies('New York', 'state')
+      end # "when type is 'state'"
+    end
+
+    context "when type is 'zip'" do
+      it 'will call search_companies_by_zip' do
+        expect(@scrapper).to receive(:search_companies_by_zip).with('000032')
+        @scrapper.search_companies('000032', 'zip')
+      end #when type is 'zip'"
+    end
+
+    context "when type is other " do
+      it 'raise Error' do 
+        expect{@scrapper.search_companies('hacker testing', 'HACK')}.to raise_error("Someone trid to hack us")
+      end
+    end
+  end
+
+  describe "search_companies_by_state(keyword)" do 
+    it "returns array compaines which matchs" do 
+      scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      search_result = scrapper.search_companies_by_state('New York')
+      expect(search_result.count).to eq(200)
+      expect(search_result.map { |e| e.class.name }).to eq(['Company'])
+    end
+    it "returns an empty array when no compaines matches" do 
+      scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      search_result = scrapper.search_companies_by_state('New York')
+      expect(search_result.count).to eq(0)
+      expect(search_result.map { |e| e.class.name }).to eq([])
+    end
+  end
 end
