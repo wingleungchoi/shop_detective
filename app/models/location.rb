@@ -3,6 +3,7 @@ class Location
   include ::Mongoid::Timestamps
 
   embedded_in :company
+  embedded_in :zip
 
   field :address, type: String
   field :longitude, type: BigDecimal

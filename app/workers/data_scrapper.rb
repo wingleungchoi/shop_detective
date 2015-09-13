@@ -46,16 +46,22 @@ class DataScrapper # class or module? which is better
     results = []
     company_name = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] a.biz-name')[0]
     if company_name != nil
-      business = Organization.find_or_initialize_by(name: "Business")
+      business = OrganizationKind.find_or_create_by(name: "Business")
+      subcatgory_name = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] div.price-category a')[0].strip
+      subcatgory = business.subcategories.find_or_create_by(name: subcatgory_name)
+      company = subcatgory.companies.find_or_create_by(name: company_name)
+      country = Country.find_or_create_by(name: 'US')
       state_code = self.search_by_css(doc, 'div.search-header h1')[0].strip.match(/[A-Z]{2,3}/)[0]
-      state = State.new(code: state_code)
-      c = Company.new(name: company_name)
-      tags = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] div.price-category a')
-      c.tag_names = tags
-      address = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] address')[0].strip
-      c.locations.new(address: address)
-      zip_code = address.match(/[0-9]{5}/)[-1]
-      results << c
+      state = country.states.find_or_create_by(code: state_code)
+      location_address = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] address')[0].strip
+      zip_code = location_address.match(/[0-9]{5}/)[-1]
+      zip = state.zips.find_or_create_by(code: zip_code) if zip_code != nil
+      if zip_code == nil
+        company.locations.find_or_create_by(address: location_address)       
+      else
+        company.locations.find_or_create_by(address: location_address, zip: zip)
+      end
+      results << company
     end
     binding.pry
     results

@@ -2,7 +2,7 @@ class OrganizationKind
   include ::Mongoid::Document
   include ::Mongoid::Timestamps
 
-  embeds_many :categories
+  embeds_many :subcategories
 
   field :name, type: String
 
