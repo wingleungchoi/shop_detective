@@ -47,15 +47,31 @@ RSpec.describe DataScrapper do
   describe "search_companies_by_state(keyword)" do 
     it "returns array compaines which matchs" do 
       scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
-      search_result = scrapper.search_companies_by_state('New York')
-      expect(search_result.count).to eq(200)
-      expect(search_result.map { |e| e.class.name }).to eq(['Company'])
+      search_result = scrapper.search_companies_by_state('New York', 10)
+      expect(search_result.count).to eq(10)
+      expect(search_result.map { |e| e.class.name }.uniq).to eq(['Company'])
     end
     it "returns an empty array when no compaines matches" do 
       scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
-      search_result = scrapper.search_companies_by_state('New York')
+      search_result = scrapper.search_companies_by_state('Nodafadsfa', 10)
       expect(search_result.count).to eq(0)
-      expect(search_result.map { |e| e.class.name }).to eq([])
+      expect(search_result).to eq([])
+    end
+  end
+
+  describe "search_companies_by_zip(keyword)" do 
+    it 'returns array compaines which matchs' do
+      scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      search_result = scrapper.search_companies_by_zip('11201', 10)
+      expect(search_result.count).to eq(10)
+      expect(search_result.map { |e| e.class.name }.uniq).to eq(['Company'])
+      expect(search_result.map { |e| e.locations.last.zip.code }.uniq).to eq([11201])
+    end
+    it 'returns an empty array when no compaines matches' do
+      scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
+      search_result = scrapper.search_companies_by_state('123136', 10)
+      expect(search_result.count).to eq(0)
+      expect(search_result).to eq([])
     end
   end
 end

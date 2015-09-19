@@ -6,7 +6,7 @@ RSpec.describe OrganizationKind do
   end
   it "has many categories" do
     origanization_kind = OrganizationKind.new(name: 'Business')
-    category1 = Category.new(name: 'Beauty')
-    origanization_kind.categories = [category1]
+    category1 = Subcategory.new(name: 'Beauty')
+    origanization_kind.subcategories = [category1]
   end
 end
