@@ -22,7 +22,11 @@ class ShopDetective < Sinatra::Application
   end
 
 #TODO change to post
-  get '/search.json' do
+  get '/:website/search.json' do
+    case params['website']
+    when 'yelp'
+      scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')  
+    end
     content_type :json
     status 200
     body({companies: {keyword: params[:keyword], keyword_kind: params[:keyword_kind]}}.to_json)

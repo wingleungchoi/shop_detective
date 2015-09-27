@@ -1,6 +1,7 @@
 # http://recipes.sinatrarb.com/p/testing/rspec
 require 'rack/test'
 require 'rspec'
+require 'factory_girl'
 
 require File.expand_path '../../server.rb', __FILE__
 
@@ -15,6 +16,12 @@ end
 RSpec.configure { |c|
   # Use color in STDOUT
   c.color = true
+
+  # Use Factory Girl
+  c.include FactoryGirl::Syntax::Methods
   
   c.include RSpecMixin 
 }
+
+# Loading factories
+FactoryGirl.find_definitions
