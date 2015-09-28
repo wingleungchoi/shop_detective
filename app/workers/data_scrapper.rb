@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 #Assumption: it is used at 'www.yelp.com'
 class DataScrapper # class or module? which is better
 
@@ -28,12 +27,12 @@ class DataScrapper # class or module? which is better
     results
   end
 
-  def search_companies(keyword, type)
+  def search_companies(keyword, type, max_result_total = 200)
     case type
     when 'state'
-      self.search_companies_by_state(keyword)
+      self.search_companies_by_state(keyword, max_result_total)
     when 'zip'
-      self.search_companies_by_zip(keyword)
+      self.search_companies_by_zip(keyword, max_result_total)
     else
       raise StandardError.new("Someone trid to hack us")
     end

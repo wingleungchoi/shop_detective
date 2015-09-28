@@ -11,6 +11,9 @@ gem 'mongoid', '~> 5.0.0.beta'
 #Geokit covert String address to longitude, latitude
 gem 'geokit', '1.10.0'
 
+#For response JSON
+gem 'json', '1.8.3'
+
 group :test, :development do
 # Rack-test for testing and simulating http respost CRUD
   gem "rack-test", '0.6.3'
