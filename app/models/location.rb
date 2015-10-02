@@ -1,9 +1,9 @@
-require 'geokit'
 class Location
   include ::Mongoid::Document
   include ::Mongoid::Timestamps
 
   embedded_in :company
+  embedded_in :state
   embedded_in :zip
 
   field :address, type: String

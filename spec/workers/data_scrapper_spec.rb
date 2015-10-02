@@ -25,14 +25,14 @@ RSpec.describe DataScrapper do
     end
     context "when type is 'state'" do
       it 'will call search_companies_by_state' do
-        expect(@scrapper).to receive(:search_companies_by_state).with('New York')
-       @scrapper.search_companies('New York', 'state')
+        expect(@scrapper).to receive(:search_companies_by_state).with('New York', 200)
+        @scrapper.search_companies('New York', 'state')
       end # "when type is 'state'"
     end
 
     context "when type is 'zip'" do
       it 'will call search_companies_by_zip' do
-        expect(@scrapper).to receive(:search_companies_by_zip).with('000032')
+        expect(@scrapper).to receive(:search_companies_by_zip).with('000032', 200)
         @scrapper.search_companies('000032', 'zip')
       end #when type is 'zip'"
     end

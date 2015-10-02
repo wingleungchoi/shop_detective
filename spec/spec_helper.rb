@@ -25,3 +25,9 @@ RSpec.configure { |c|
 
 # Loading factories
 FactoryGirl.find_definitions
+
+# for testing server.rb (kind of controllers)
+# http://tarynsauer.tumblr.com/post/72337538488/using-rspec-to-test-sinatra-controller
+def app
+  ShopDetective.new
+end

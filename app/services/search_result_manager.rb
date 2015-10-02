@@ -15,13 +15,13 @@ class SearchResultManager
     self.results.each do |company|
       company_data << {
         :company_name    => company.name,
-        :latitude        => company.locations.first.latitude,
-        :longitude       => company.locations.first.longitude,
+        :latitude        => company.locations.last.latitude,
+        :longitude       => company.locations.last.longitude,
         :subcategoy_name => company.subcategory.name,
-        :zip_code        => company.locations.first.zip.code,
-        :state_name      => company.locations.first.zip.state.name,
-        :state_code      => company.locations.first.zip.state.code,
-        :country_name    => company.locations.first.zip.state.country.name
+        :zip_code        => (company.locations.last.zip.code if company.locations.last.zip != nil ),
+        :state_name      => company.locations.last.state.name,
+        :state_code      => company.locations.last.state.code,
+        :country_name    => company.locations.last.state.country.name
       }
     end # self.results.each do |company|
     company_data.to_json

@@ -15,7 +15,6 @@ class ShopDetective < Sinatra::Application
 
 #TODO change to post
   post '/yelp/search.json' do
-    binding.pry
     keyword = params['keyword']
     type    = params['type']
     scrapper = DataScrapper.new(document_url: 'http://www.yelp.com')
@@ -30,3 +29,9 @@ class ShopDetective < Sinatra::Application
   # start the server if ruby file executed directly
   run! if app_file == $0
 end
+
+=begin  
+  [Country, State, Zip, Location, Company, Subcategory, OrganizationKind].each do |c|
+    c.delete_all
+  end
+=end

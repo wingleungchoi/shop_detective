@@ -68,21 +68,21 @@ class DataScrapper # class or module? which is better
     results = []
     business = OrganizationKind.find_or_create_by(name: "Business")
     (1..10).to_a.map { |e| e += page_index_start }.each do |d_key|
-      company_name = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] a.biz-name')[0]
+      company_name = self.search_by_css(doc, "li.regular-search-result div[data-key=\"#{d_key}\"] a.biz-name")[0]
       if company_name != nil
-        subcatgory_name = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] div.price-category a')[0].strip
+        subcatgory_name = self.search_by_css(doc, "li.regular-search-result div[data-key=\"#{d_key}\"] div.price-category a")[0].strip
         subcatgory = business.subcategories.find_or_create_by(name: subcatgory_name)
         company = subcatgory.companies.find_or_create_by(name: company_name)
         country = Country.find_or_create_by(name: 'US')
         state_code = self.search_by_css(doc, 'div.search-header h1')[0].strip.match(/[A-Z]{2,3}/)[0]
         state = country.states.find_or_create_by(code: state_code)
-        location_address = self.search_by_css(doc, 'li.regular-search-result div[data-key="1"] address')[0].strip
-        zip_code = location_address.match(/[0-9]{5}/)[-1]
+        location_address = self.search_by_css(doc, "li.regular-search-result div[data-key=\"#{d_key}\"] address")[0].strip
+        zip_code = location_address.match(/[0-9]{5}/).try(:[], -1)
         zip = state.zips.find_or_create_by(code: zip_code) if zip_code != nil
         if zip_code == nil
-          company.locations.find_or_create_by(address: location_address)       
+          company.locations.find_or_create_by(address: location_address, state: state)
         else
-          company.locations.find_or_create_by(address: location_address, zip: zip)
+          company.locations.find_or_create_by(address: location_address, zip: zip, state: state)
         end
         results << company
       else

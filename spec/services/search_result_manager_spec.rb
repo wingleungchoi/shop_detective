@@ -26,23 +26,23 @@ RSpec.describe SearchResultManager do
         expect_result = [
           {
             :company_name    => company_1.name,
-            :latitude        => company_1.locations.first.latitude,
-            :longitude       => company_1.locations.first.longitude,
+            :latitude        => company_1.locations.last.latitude,
+            :longitude       => company_1.locations.last.longitude,
             :subcategoy_name => company_1.subcategory.name,
-            :zip_code        => company_1.locations.first.zip.code,
-            :state_name      => company_1.locations.first.zip.state.name,
-            :state_code      => company_1.locations.first.zip.state.code,
-            :country_name    => company_1.locations.first.zip.state.country.name
+            :zip_code        => company_1.locations.last.zip.code,
+            :state_name      => company_1.locations.last.state.name,
+            :state_code      => company_1.locations.last.state.code,
+            :country_name    => company_1.locations.last.state.country.name
           },
           {
             :company_name    => company_2.name,
-            :latitude        => company_2.locations.first.latitude,
-            :longitude       => company_2.locations.first.longitude,
+            :latitude        => company_2.locations.last.latitude,
+            :longitude       => company_2.locations.last.longitude,
             :subcategoy_name => company_2.subcategory.name,
-            :zip_code        => company_2.locations.first.zip.code,
-            :state_name      => company_2.locations.first.zip.state.name,
-            :state_code      => company_2.locations.first.zip.state.code,
-            :country_name    => company_2.locations.first.zip.state.country.name
+            :zip_code        => company_2.locations.last.zip.code,
+            :state_name      => company_2.locations.last.state.name,
+            :state_code      => company_2.locations.last.state.code,
+            :country_name    => company_2.locations.last.state.country.name
           }
         ].to_json
         expect(search_results_manager.get_companies_json).to eq(expect_result)
